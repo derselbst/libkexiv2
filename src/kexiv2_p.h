@@ -161,9 +161,13 @@ public:
         {
             printExiv2ExceptionError(QString::fromLatin1(operationError), e);
         }
+        catch( const std::exception& e )
+        {
+            qCCritical(LIBKEXIV2_LOG) << operationError << ": " << e.what();
+        }
         catch(...)
         {
-            qCCritical(LIBKEXIV2_LOG) << "Default exception from Exiv2";
+            qCCritical(LIBKEXIV2_LOG) << "Unknown exception from Exiv2";
         }
 
         return std::move(errorReturnValue);
