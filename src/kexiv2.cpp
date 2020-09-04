@@ -224,7 +224,7 @@ bool KExiv2::loadFromData(const QByteArray& imgData) const
     if (imgData.isEmpty())
         return false;
 
-    try
+    return d->guardedCall([&]
     {
         Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open((Exiv2::byte*)imgData.data(), imgData.size());
 
@@ -257,17 +257,9 @@ bool KExiv2::loadFromData(const QByteArray& imgData) const
 #endif // _XMP_SUPPORT_
 
         return true;
-    }
-    catch( Exiv2::Error& e )
-    {
-        d->printExiv2ExceptionError(QString::fromLatin1("Cannot load metadata using Exiv2 "), e);
-    }
-    catch(...)
-    {
-        qCCritical(LIBKEXIV2_LOG) << "Default exception from Exiv2";
-    }
-
-    return false;
+    },
+    "Cannot load metadata using Exiv2 ",
+    false);
 }
 
 bool KExiv2::load(const QString& filePath) const
@@ -280,7 +272,7 @@ bool KExiv2::load(const QString& filePath) const
     d->filePath      = filePath;
     bool hasLoaded   = false;
 
-    try
+    return d->guardedCall([&]
     {
         Exiv2::Image::AutoPtr image;
 
@@ -313,19 +305,8 @@ bool KExiv2::load(const QString& filePath) const
 #endif // _XMP_SUPPORT_
 
         hasLoaded = true;
-    }
-    catch( Exiv2::Error& e )
-    {
-        d->printExiv2ExceptionError(QString::fromLatin1("Cannot load metadata from file "), e);
-    }
-    catch(...)
-    {
-        qCCritical(LIBKEXIV2_LOG) << "Default exception from Exiv2";
-    }
-
+        
 #ifdef _XMP_SUPPORT_
-    try
-    {
         if (d->useXMPSidecar4Reading)
         {
             QString xmpSidecarPath = sidecarFilePathForFile(filePath);
@@ -344,19 +325,12 @@ bool KExiv2::load(const QString& filePath) const
                 hasLoaded = true;
             }
         }
-    }
-    catch( Exiv2::Error& e )
-    {
-        d->printExiv2ExceptionError(QString::fromLatin1("Cannot load XMP sidecar"), e);
-    }
-    catch(...)
-    {
-        qCCritical(LIBKEXIV2_LOG) << "Default exception from Exiv2";
-    }
-
 #endif // _XMP_SUPPORT_
 
-    return hasLoaded;
+        return hasLoaded;
+    },
+    "Cannot load metadata from file ",
+    hasLoaded);
 }
 
 bool KExiv2::save(const QString& imageFilePath) const

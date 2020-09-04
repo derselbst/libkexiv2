@@ -96,22 +96,14 @@ bool KExiv2::Private::saveToXMPSidecar(const QFileInfo& finfo) const
         return false;
     }
 
-    try
+    return guardedCall([&]
     {
         Exiv2::Image::AutoPtr image;
         image = Exiv2::ImageFactory::create(Exiv2::ImageType::xmp, (const char*)(QFile::encodeName(filePath).constData()));
         return saveOperations(finfo, image);
-    }
-    catch( Exiv2::Error& e )
-    {
-        printExiv2ExceptionError(QString::fromLatin1("Cannot save metadata to XMP sidecar using Exiv2 "), e);
-        return false;
-    }
-    catch(...)
-    {
-        qCCritical(LIBKEXIV2_LOG) << "Default exception from Exiv2";
-        return false;
-    }
+    },
+    "Cannot save metadata to XMP sidecar using Exiv2 ",
+    false);
 }
 
 bool KExiv2::Private::saveToFile(const QFileInfo& finfo) const
@@ -175,27 +167,19 @@ bool KExiv2::Private::saveToFile(const QFileInfo& finfo) const
     bool ret = false;
 */
 
-    try
+    return guardedCall([&]
     {
         Exiv2::Image::AutoPtr image;
         image = Exiv2::ImageFactory::open((const char*)(QFile::encodeName(finfo.filePath()).constData()));
         return saveOperations(finfo, image);
-    }
-    catch( Exiv2::Error& e )
-    {
-        printExiv2ExceptionError(QString::fromLatin1("Cannot save metadata to image using Exiv2 "), e);
-        return false;
-    }
-    catch(...)
-    {
-        qCCritical(LIBKEXIV2_LOG) << "Default exception from Exiv2";
-        return false;
-    }
+    },
+    "Cannot save metadata to image using Exiv2 ",
+    false);
 }
 
 bool KExiv2::Private::saveOperations(const QFileInfo& finfo, Exiv2::Image::AutoPtr image) const
 {
-    try
+    return guardedCall([&]
     {
         Exiv2::AccessMode mode;
         bool wroteComment = false, wroteEXIF = false, wroteIPTC = false, wroteXMP = false;
@@ -340,17 +324,9 @@ bool KExiv2::Private::saveOperations(const QFileInfo& finfo, Exiv2::Image::AutoP
         }
 
         return true;
-    }
-    catch( Exiv2::Error& e )
-    {
-        printExiv2ExceptionError(QString::fromLatin1("Cannot save metadata using Exiv2 "), e);
-    }
-    catch(...)
-    {
-        qCCritical(LIBKEXIV2_LOG) << "Default exception from Exiv2";
-    }
-
-    return false;
+    },
+    "Cannot save metadata using Exiv2 ",
+    false);
 }
 
 void KExiv2Data::Private::clear()
@@ -377,7 +353,7 @@ void KExiv2::Private::printExiv2MessageHandler(int lvl, const char* msg)
 
 QString KExiv2::Private::convertCommentValue(const Exiv2::Exifdatum& exifDatum) const
 {
-    try
+    return guardedCall([&]
     {
         std::string comment;
         std::string charset;
@@ -417,17 +393,9 @@ QString KExiv2::Private::convertCommentValue(const Exiv2::Exifdatum& exifDatum) 
         {
             return detectEncodingAndDecode(comment);
         }
-    }
-    catch( Exiv2::Error& e )
-    {
-        printExiv2ExceptionError(QString::fromLatin1("Cannot convert Comment using Exiv2 "), e);
-    }
-    catch(...)
-    {
-        qCCritical(LIBKEXIV2_LOG) << "Default exception from Exiv2";
-    }
-
-    return QString();
+    },
+    "Cannot convert Comment using Exiv2 ",
+    QString());
 }
 
 QString KExiv2::Private::detectEncodingAndDecode(const std::string& value) const
@@ -581,7 +549,7 @@ int KExiv2::Private::getXMPTagsListFromPrefix(const QString& pf, KExiv2::TagsMap
 
 #ifdef _XMP_SUPPORT_
 
-    try
+    return guardedCall([&]
     {
         QList<const Exiv2::XmpPropertyInfo*> tags;
         tags << Exiv2::XmpProperties::propertyList(pf.toLatin1().data());
@@ -600,15 +568,11 @@ int KExiv2::Private::getXMPTagsListFromPrefix(const QString& pf, KExiv2::TagsMap
                 i++;
             }
         }
-    }
-    catch( Exiv2::Error& e )
-    {
-        printExiv2ExceptionError(QString::fromLatin1("Cannot get Xmp tags list using Exiv2 "), e);
-    }
-    catch(...)
-    {
-        qCCritical(LIBKEXIV2_LOG) << "Default exception from Exiv2";
-    }
+
+        return i;
+    },
+    "Cannot get Xmp tags list using Exiv2 ",
+    i);
 
 #else
 
@@ -616,8 +580,6 @@ int KExiv2::Private::getXMPTagsListFromPrefix(const QString& pf, KExiv2::TagsMap
     Q_UNUSED(tagsMap);
 
 #endif // _XMP_SUPPORT_
-
-    return i;
 }
 
 #ifdef _XMP_SUPPORT_

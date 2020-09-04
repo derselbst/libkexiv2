@@ -49,6 +49,8 @@
 #include <QFileInfo>
 #include <QSharedData>
 
+#include "libkexiv2_debug.h"
+
 // Exiv2 includes -------------------------------------------------------
 
 // NOTE: All Exiv2 header must be stay there to not expose external source code to Exiv2 API
@@ -147,6 +149,25 @@ public:
 
     void loadSidecarData(Exiv2::Image::AutoPtr xmpsidecar);
 #endif
+
+    template<typename T>
+    auto guardedCall (T&& func, const char* operationError, decltype(func()) errorReturnValue) const -> decltype(func())
+    {
+        try
+        {
+            return func();
+        }
+        catch( Exiv2::Error& e )
+        {
+            printExiv2ExceptionError(QString::fromLatin1(operationError), e);
+        }
+        catch(...)
+        {
+            qCCritical(LIBKEXIV2_LOG) << "Default exception from Exiv2";
+        }
+
+        return std::move(errorReturnValue);
+    }
 
 public:
 

@@ -13,6 +13,10 @@ cmake_minimum_required(VERSION ${CMAKE_MIN_VERSION})
 
 project(libkexiv2 VERSION "5.0.0")
 
+# by default, require c++11
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 message(STATUS "----------------------------------------------------------------------------------")
 message(STATUS "Starting CMake configuration for: ${PROJECT_NAME}")
 
