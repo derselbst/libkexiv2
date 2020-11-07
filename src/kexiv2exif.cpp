@@ -693,7 +693,7 @@ bool KExiv2::getExifTagLong(const char* exifTagName, long& val, int component) c
         Exiv2::ExifData exifData(d->exifMetadata());
         Exiv2::ExifData::iterator it = exifData.findKey(exifKey);
 
-        if (it != exifData.end() && it->count() > 0)
+        if (it != exifData.end() && it->count() > component)
         {
             val = it->toLong(component);
             return true;
