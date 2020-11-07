@@ -40,6 +40,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <sstream>
 
 // Qt includes
 
@@ -153,17 +154,22 @@ public:
     template<typename T>
     auto guardedCall (T&& func, const char* operationError, decltype(func()) errorReturnValue) const -> decltype(func())
     {
+        std::stringstream ss;
         try
         {
             return func();
         }
         catch( Exiv2::Error& e )
         {
+            ss << operationError << ": " << e.what();
+            errorMessage = QString::fromLatin1(ss.str().c_str());
             printExiv2ExceptionError(QString::fromLatin1(operationError), e);
         }
         catch( const std::exception& e )
         {
-            qCCritical(LIBKEXIV2_LOG) << operationError << ": " << e.what();
+            ss << operationError << ": " << e.what();
+            errorMessage = QString::fromLatin1(ss.str().c_str());
+            qCCritical(LIBKEXIV2_LOG) << ss.str().c_str();
         }
         catch(...)
         {
@@ -201,6 +207,7 @@ public:
     QString                                        filePath;
     QSize                                          pixelSize;
     QString                                        mimeType;
+    mutable QString                                errorMessage;
 
     QSharedDataPointer<KExiv2Data::Private> data;
 };

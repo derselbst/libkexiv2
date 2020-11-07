@@ -279,6 +279,9 @@ public:
      *  see the docs for getPixelSize() to know when it is available.
      */
     QString getMimeType() const;
+    
+    /** If an error occurred previously, the will return its message */
+    QString getErrorMessage() const;
 
     /** Enable or disable writing metadata operations to RAW tiff based files.
         It requires Exiv2 0.18. By default RAW files are untouched.

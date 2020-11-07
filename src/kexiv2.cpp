@@ -460,6 +460,11 @@ QString KExiv2::getMimeType() const
     return d->mimeType;
 }
 
+QString KExiv2::getErrorMessage() const
+{
+    return d->errorMessage;
+}
+
 void KExiv2::setWriteRawFiles(const bool on)
 {
     d->writeRawFiles = on;
