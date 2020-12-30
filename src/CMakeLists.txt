@@ -47,7 +47,7 @@ ecm_generate_headers(kexiv2_CamelCase_HEADERS
                      REQUIRED_HEADERS kexiv2_HEADERS
 )
 
-add_library(KF5KExiv2 SHARED ${kexiv2_LIB_SRCS})
+add_library(KF5KExiv2 ${kexiv2_LIB_SRCS})
 add_library(KF5::KExiv2 ALIAS KF5KExiv2)
 
 generate_export_header(KF5KExiv2 BASE_NAME libkexiv2 EXPORT_MACRO_NAME LIBKEXIV2_EXPORT)
