@@ -62,8 +62,8 @@ target_link_libraries(KF5KExiv2
                       PRIVATE
                       LibExiv2::LibExiv2
                       PUBLIC
-                      Qt5::Core
-                      Qt5::Gui
+                      Qt6::Core
+                      Qt6::Gui
 )
 
 if( WIN32 )

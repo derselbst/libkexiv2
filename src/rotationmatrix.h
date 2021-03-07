@@ -30,7 +30,7 @@
 
 // Qt includes
 
-#include <QMatrix>
+#include <QTransform>
 
 // Local includes
 
@@ -103,11 +103,11 @@ public:
      */
     KExiv2::ImageOrientation exifOrientation() const;
 
-    /// Returns a QMatrix representing this matrix
-    QMatrix toMatrix() const;
+    /// Returns a QTransform representing this matrix
+    QTransform toMatrix() const;
 
-    /// Returns a QMatrix for the given Exif orientation
-    static QMatrix toMatrix(KExiv2::ImageOrientation orientation);
+    /// Returns a QTransform for the given Exif orientation
+    static QTransform toMatrix(KExiv2::ImageOrientation orientation);
 
     RotationMatrix(int m11, int m12, int m21, int m22);
 

@@ -6,7 +6,7 @@
 
 set(CMAKE_MIN_VERSION   "3.0.0")
 set(ECM_MIN_VERSION     "5.68.0")
-set(REQUIRED_QT_VERSION "5.12.0")
+set(REQUIRED_QT_VERSION "6.0.0")
 set(EXIV2_MIN_VERSION   "0.27")
 
 cmake_minimum_required(VERSION ${CMAKE_MIN_VERSION})
@@ -85,7 +85,7 @@ ecm_setup_version(${libkexiv2_VERSION}
 
 ############## Find Packages ###################
 
-find_package(Qt5 ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE COMPONENTS
+find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE COMPONENTS
              Core
              Gui
 )

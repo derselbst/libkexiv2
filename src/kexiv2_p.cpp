@@ -42,7 +42,7 @@ extern "C"
 
 // Qt includes
 
-#include <QTextCodec>
+#include <QStringDecoder>
 
 // Local includes
 
@@ -382,8 +382,13 @@ QString KExiv2::Private::convertCommentValue(const Exiv2::Exifdatum& exifDatum) 
         }
         else if (charset == "\"Jis\"")
         {
-            QTextCodec* const codec = QTextCodec::codecForName("JIS7");
-            return codec->toUnicode(comment.c_str());
+            QStringDecoder codec("JIS7");
+            if(codec.isValid())
+            {
+                QString decStr = codec(comment.c_str());
+                return decStr;
+            }
+            return QString();
         }
         else if (charset == "\"Ascii\"")
         {

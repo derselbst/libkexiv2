@@ -43,7 +43,6 @@
 #include <QSharedDataPointer>
 #include <QStringList>
 #include <QVariant>
-#include <QRegExp>
 #include <QUrl>
 #include <QImage>
 

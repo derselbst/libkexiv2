@@ -287,14 +287,14 @@ KExiv2::ImageOrientation RotationMatrix::exifOrientation() const
     return KExiv2::ORIENTATION_UNSPECIFIED;
 }
 
-QMatrix RotationMatrix::toMatrix() const
+QTransform RotationMatrix::toMatrix() const
 {
     return toMatrix(exifOrientation());
 }
 
-QMatrix RotationMatrix::toMatrix(KExiv2::ImageOrientation orientation)
+QTransform RotationMatrix::toMatrix(KExiv2::ImageOrientation orientation)
 {
-    QMatrix matrix;
+    QTransform matrix;
 
     switch (orientation)
     {

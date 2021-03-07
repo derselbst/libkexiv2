@@ -34,7 +34,6 @@
 
 // Qt includes
 
-#include <QTextCodec>
 #include <QBuffer>
 
 // Local includes
@@ -315,21 +314,6 @@ bool KExiv2::setExifComment(const QString& comment, bool setProgramName) const
         {
             setExifTagString("Exif.Image.ImageDescription", comment, setProgramName);
 
-            // Write as Unicode only when necessary.
-            QTextCodec* latin1Codec = QTextCodec::codecForName("iso8859-1");
-            if (latin1Codec->canEncode(comment))
-            {
-                // We know it's in the ISO-8859-1 8bit range.
-                // Check if it's in the ASCII 7bit range
-                if (is7BitAscii(comment.toLatin1()))
-                {
-                    // write as ASCII
-                    std::string exifComment("charset=\"Ascii\" ");
-                    exifComment += comment.toLatin1().constData();
-                    d->exifMetadata()["Exif.Photo.UserComment"] = exifComment;
-                    return true;
-                }
-            }
             // write as Unicode (UCS-2)
             std::string exifComment("charset=\"Unicode\" ");
             exifComment += comment.toUtf8().constData();
@@ -930,7 +914,7 @@ QImage KExiv2::getExifThumbnail(bool fixOrientation) const
 
 bool KExiv2::rotateExifQImage(QImage& image, ImageOrientation orientation) const
 {
-    QMatrix matrix = RotationMatrix::toMatrix(orientation);
+    QTransform matrix = RotationMatrix::toMatrix(orientation);
 
     if ((orientation != ORIENTATION_NORMAL) && (orientation != ORIENTATION_UNSPECIFIED))
     {
