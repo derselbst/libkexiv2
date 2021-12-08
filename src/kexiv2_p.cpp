@@ -554,7 +554,7 @@ int KExiv2::Private::getXMPTagsListFromPrefix(const QString& pf, KExiv2::TagsMap
 
 #ifdef _XMP_SUPPORT_
 
-    return guardedCall([&]
+    i = guardedCall([&]
     {
         QList<const Exiv2::XmpPropertyInfo*> tags;
         tags << Exiv2::XmpProperties::propertyList(pf.toLatin1().data());
@@ -585,6 +585,8 @@ int KExiv2::Private::getXMPTagsListFromPrefix(const QString& pf, KExiv2::TagsMap
     Q_UNUSED(tagsMap);
 
 #endif // _XMP_SUPPORT_
+    
+    return i;
 }
 
 #ifdef _XMP_SUPPORT_
