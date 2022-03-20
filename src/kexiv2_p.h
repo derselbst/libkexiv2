@@ -1,29 +1,9 @@
-/** ===========================================================
- * @file
- *
- * This file is a part of KDE project
- *
- *
- * @date   2007-09-03
- * @brief  Exiv2 library interface for KDE
- *
- * @author Copyright (C) 2006-2015 by Gilles Caulier
- *         <a href="mailto:caulier dot gilles at gmail dot com">caulier dot gilles at gmail dot com</a>
- * @author Copyright (C) 2006-2012 by Marcel Wiesweg
- *         <a href="mailto:marcel dot wiesweg at gmx dot de">marcel dot wiesweg at gmx dot de</a>
- *
- * This program is free software; you can redistribute it
- * and/or modify it under the terms of the GNU General
- * Public License as published by the Free Software Foundation;
- * either version 2, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * ============================================================ */
+/*
+    SPDX-FileCopyrightText: 2006-2015 Gilles Caulier <caulier dot gilles at gmail dot com>
+    SPDX-FileCopyrightText: 2006-2012 Marcel Wiesweg <marcel dot wiesweg at gmx dot de>
+
+    SPDX-License-Identifier: GPL-2.0-or-later
+*/
 
 #ifndef KEXIV2PRIVATE_H
 #define KEXIV2PRIVATE_H
@@ -85,7 +65,7 @@
 namespace KExiv2Iface
 {
 
-class Q_DECL_HIDDEN KExiv2Data::Private : public QSharedData
+class KExiv2DataPrivate : public QSharedData
 {
 public:
 
@@ -106,14 +86,14 @@ public:
 
 // --------------------------------------------------------------------------
 
-class Q_DECL_HIDDEN KExiv2::Private
+class KExiv2Private
 {
 public:
 
-    Private();
-    ~Private();
+    KExiv2Private();
+    ~KExiv2Private();
 
-    void copyPrivateData(const Private* const other);
+    void copyPrivateData(const KExiv2Private* const other);
 
     bool saveToXMPSidecar(const QFileInfo& finfo)                            const;
     bool saveToFile(const QFileInfo& finfo)                                  const;
@@ -209,7 +189,7 @@ public:
     QString                                        mimeType;
     mutable QString                                errorMessage;
 
-    QSharedDataPointer<KExiv2Data::Private> data;
+    QSharedDataPointer<KExiv2DataPrivate> data;
 };
 
 // --------------------------------------------------------------------------------------------

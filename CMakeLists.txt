@@ -1,13 +1,13 @@
 #
-# Copyright (c) 2010-2015, Gilles Caulier, <caulier dot gilles at gmail dot com>
+# SPDX-FileCopyrightText: 2010-2015 Gilles Caulier <caulier dot gilles at gmail dot com>
 #
-# Redistribution and use is allowed according to the terms of the BSD license.
-# For details see the accompanying COPYING-CMAKE-SCRIPTS file.
+# SPDX-License-Identifier: BSD-3-Clause
+#
 
-set(CMAKE_MIN_VERSION   "3.0.0")
-set(ECM_MIN_VERSION     "5.68.0")
-set(REQUIRED_QT_VERSION "6.0.0")
-set(EXIV2_MIN_VERSION   "0.27")
+set(CMAKE_MIN_VERSION   "3.16.0")
+set(ECM_MIN_VERSION     "5.80.0")
+set(QT_MIN_VERSION      "5.15.0")
+set(EXIV2_MIN_VERSION   "0.25")
 
 cmake_minimum_required(VERSION ${CMAKE_MIN_VERSION})
 
@@ -56,7 +56,10 @@ message(STATUS "Starting CMake configuration for: ${PROJECT_NAME}")
 set(KEXIV2_LIB_SO_CUR_VERSION "15")
 set(KEXIV2_LIB_SO_REV_VERSION "0")
 set(KEXIV2_LIB_SO_AGE_VERSION "0")
-
+# TODO Qt6 or next ABI break: the very SO version is usually a single number, not a triple.
+# The library non-SO version as decribed in the link above is a separate thing
+# (cmp. VVERSION & SOVERSION args of set_target_properties(KF5KExiv2)
+# You can start with 0 or 1 when KF6KExiv2 is created
 set(LIBKEXIV2_SO_VERSION  "${KEXIV2_LIB_SO_CUR_VERSION}.${KEXIV2_LIB_SO_REV_VERSION}.${KEXIV2_LIB_SO_AGE_VERSION}")
 
 ############## ECM setup ######################
@@ -66,7 +69,7 @@ set(CMAKE_MODULE_PATH ${libkexiv2_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH})
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
-include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
+include(KDECompilerSettings NO_POLICY_SCOPE)
 
 include(ECMGenerateHeaders)
 include(ECMSetupVersion)
@@ -76,16 +79,9 @@ include(GenerateExportHeader)
 include(CMakePackageConfigHelpers)
 include(FeatureSummary)
 
-ecm_setup_version(${libkexiv2_VERSION}
-                  VARIABLE_PREFIX      KEXIV2
-                  VERSION_HEADER       "src/libkexiv2_version.h"
-                  PACKAGE_VERSION_FILE "KF5KExiv2ConfigVersion.cmake"
-                  SOVERSION            ${LIBKEXIV2_SO_VERSION}
-)
-
 ############## Find Packages ###################
 
-find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE COMPONENTS
+find_package(Qt6 REQUIRED NO_MODULE COMPONENTS
              Core
              Gui
 )
@@ -114,29 +110,5 @@ add_subdirectory(src)
 if (BUILD_TESTING)
     add_subdirectory(tests)
 endif()
-
-############## CMake Config Files ##############
-
-message("${CMAKECONFIG_INSTALL_DIR}")
-set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/KF5KExiv2")
-
-configure_package_config_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/KF5KExiv2Config.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/KF5KExiv2Config.cmake"
-    INSTALL_DESTINATION ${CMAKECONFIG_INSTALL_DIR}
-)
-
-install(FILES
-        "${CMAKE_CURRENT_BINARY_DIR}/KF5KExiv2Config.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/KF5KExiv2ConfigVersion.cmake"
-        DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
-        COMPONENT   Devel
-)
-
-install(EXPORT      KF5KExiv2Targets
-        DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
-        FILE        KF5KExiv2Targets.cmake
-        NAMESPACE   KF5::
-)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

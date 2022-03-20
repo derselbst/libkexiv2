@@ -1,29 +1,9 @@
-/** ===========================================================
- * @file
- *
- * This file is a part of KDE project
- *
- *
- * @date   2009-11-14
- * @brief  Embedded preview loading
- *
- * @author Copyright (C) 2009-2015 by Gilles Caulier
- *         <a href="mailto:caulier dot gilles at gmail dot com">caulier dot gilles at gmail dot com</a>
- * @author Copyright (C) 2009-2012 by Marcel Wiesweg
- *         <a href="mailto:marcel dot wiesweg at gmx dot de">marcel dot wiesweg at gmx dot de</a>
- *
- * This program is free software; you can redistribute it
- * and/or modify it under the terms of the GNU General
- * Public License as published by the Free Software Foundation;
- * either version 2, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * ============================================================ */
+/*
+    SPDX-FileCopyrightText: 2009-2015 Gilles Caulier <caulier dot gilles at gmail dot com>
+    SPDX-FileCopyrightText: 2009-2012 Marcel Wiesweg <marcel dot wiesweg at gmx dot de>
+
+    SPDX-License-Identifier: GPL-2.0-or-later
+*/
 
 // Local includes
 
@@ -35,16 +15,16 @@
 namespace KExiv2Iface
 {
 
-class Q_DECL_HIDDEN KExiv2Previews::Private
+class KExiv2PreviewsPrivate
 {
 public:
 
-    Private()
+    KExiv2PreviewsPrivate()
     {
         manager = nullptr;
     }
 
-    ~Private()
+    ~KExiv2PreviewsPrivate()
     {
         delete manager;
     }
@@ -75,7 +55,7 @@ public:
 };
 
 KExiv2Previews::KExiv2Previews(const QString& filePath)
-    : d(new Private)
+    : d(new KExiv2PreviewsPrivate)
 {
     try
     {
@@ -84,7 +64,7 @@ KExiv2Previews::KExiv2Previews(const QString& filePath)
     }
     catch( Exiv2::Error& e )
     {
-        KExiv2::Private::printExiv2ExceptionError(QString::fromLatin1("Cannot load metadata using Exiv2 "), e);
+        KExiv2Private::printExiv2ExceptionError(QString::fromLatin1("Cannot load metadata using Exiv2 "), e);
     }
     catch(...)
     {
@@ -93,7 +73,7 @@ KExiv2Previews::KExiv2Previews(const QString& filePath)
 }
 
 KExiv2Previews::KExiv2Previews(const QByteArray& imgData)
-    : d(new Private)
+    : d(new KExiv2PreviewsPrivate)
 {
     try
     {
@@ -102,7 +82,7 @@ KExiv2Previews::KExiv2Previews(const QByteArray& imgData)
     }
     catch( Exiv2::Error& e )
     {
-        KExiv2::Private::printExiv2ExceptionError(QString::fromLatin1("Cannot load metadata using Exiv2 "), e);
+        KExiv2Private::printExiv2ExceptionError(QString::fromLatin1("Cannot load metadata using Exiv2 "), e);
     }
     catch(...)
     {
@@ -110,10 +90,7 @@ KExiv2Previews::KExiv2Previews(const QByteArray& imgData)
     }
 }
 
-KExiv2Previews::~KExiv2Previews()
-{
-    delete d;
-}
+KExiv2Previews::~KExiv2Previews() = default;
 
 bool KExiv2Previews::isEmpty()
 {
@@ -190,7 +167,7 @@ QByteArray KExiv2Previews::data(int index)
     }
     catch( Exiv2::Error& e )
     {
-        KExiv2::Private::printExiv2ExceptionError(QString::fromLatin1("Cannot load metadata using Exiv2 "), e);
+        KExiv2Private::printExiv2ExceptionError(QString::fromLatin1("Cannot load metadata using Exiv2 "), e);
         return QByteArray();
     }
     catch(...)
