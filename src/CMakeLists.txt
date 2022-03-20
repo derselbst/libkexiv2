@@ -115,7 +115,7 @@ ecm_qt_install_logging_categories(
 set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/${KEXIV2_CMAKECONFIG_NAME}")
 
 configure_package_config_file(
-    "${CMAKE_SOURCE_DIR}/cmake/templates/${KEXIV2_CMAKECONFIG_NAME}Config.cmake.in"
+    "${PROJECT_SOURCE_DIR}/cmake/templates/${KEXIV2_CMAKECONFIG_NAME}Config.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/${KEXIV2_CMAKECONFIG_NAME}Config.cmake"
     INSTALL_DESTINATION ${CMAKECONFIG_INSTALL_DIR}
 )
