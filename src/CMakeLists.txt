@@ -98,11 +98,11 @@ install(FILES
     COMPONENT   Devel
 )
 
-install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/libkexiv2_version.h
-    DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}
-    COMPONENT   Devel
-)
+#install(FILES
+    #${CMAKE_CURRENT_BINARY_DIR}/libkexiv2_version.h
+    #DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}
+    #COMPONENT   Devel
+#)
 
 ecm_qt_install_logging_categories(
     EXPORT kexiv2
