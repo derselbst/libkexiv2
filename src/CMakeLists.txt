@@ -16,7 +16,7 @@ ecm_setup_version(${libkexiv2_VERSION}
 
 kde_enable_exceptions()
 
-add_library(KExiv2 SHARED)
+add_library(KExiv2)
 
 if( WIN32 )
     target_compile_definitions(KExiv2 PRIVATE -DEXV_HAVE_DLL)
