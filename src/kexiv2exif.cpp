@@ -219,9 +219,9 @@ QString KExiv2::getExifComment() const
     {
         if (!d->exifMetadata().empty())
         {
-            Exiv2::ExifData exifData(d->exifMetadata());
             Exiv2::ExifKey key("Exif.Photo.UserComment");
-            Exiv2::ExifData::iterator it = exifData.findKey(key);
+            const Exiv2::ExifData& exifData = d->exifMetadata();
+            auto it = exifData.findKey(key);
 
             if (it != exifData.end())
             {
@@ -233,7 +233,7 @@ QString KExiv2::getExifComment() const
             }
 
             Exiv2::ExifKey key2("Exif.Image.ImageDescription");
-            Exiv2::ExifData::iterator it2 = exifData.findKey(key2);
+            auto it2 = exifData.findKey(key2);
 
             if (it2 != exifData.end())
             {
@@ -389,8 +389,8 @@ bool KExiv2::getExifTagRational(const char* exifTagName, long int& num, long int
     try
     {
         Exiv2::ExifKey exifKey(exifTagName);
-        Exiv2::ExifData exifData(d->exifMetadata());
-        Exiv2::ExifData::iterator it = exifData.findKey(exifKey);
+        const Exiv2::ExifData& exifData = d->exifMetadata();
+        auto it = exifData.findKey(exifKey);
 
         if (it != exifData.end())
         {
@@ -654,8 +654,8 @@ bool KExiv2::getExifTagLong(const char* exifTagName, long& val, int component) c
     try
     {
         Exiv2::ExifKey exifKey(exifTagName);
-        Exiv2::ExifData exifData(d->exifMetadata());
-        Exiv2::ExifData::iterator it = exifData.findKey(exifKey);
+        const Exiv2::ExifData& exifData = d->exifMetadata();
+        auto it = exifData.findKey(exifKey);
 
         if (it != exifData.end() && it->count() > component)
         {
@@ -680,8 +680,8 @@ QByteArray KExiv2::getExifTagData(const char* exifTagName) const
     try
     {
         Exiv2::ExifKey exifKey(exifTagName);
-        Exiv2::ExifData exifData(d->exifMetadata());
-        Exiv2::ExifData::iterator it = exifData.findKey(exifKey);
+        const Exiv2::ExifData& exifData = d->exifMetadata();
+        auto it = exifData.findKey(exifKey);
 
         if (it != exifData.end())
         {
@@ -710,8 +710,8 @@ QVariant KExiv2::getExifTagVariant(const char* exifTagName, bool rationalAsListO
     try
     {
         Exiv2::ExifKey exifKey(exifTagName);
-        Exiv2::ExifData exifData(d->exifMetadata());
-        Exiv2::ExifData::iterator it = exifData.findKey(exifKey);
+        const Exiv2::ExifData& exifData = d->exifMetadata();
+        auto it = exifData.findKey(exifKey);
 
         if (it != exifData.end())
         {
@@ -795,8 +795,8 @@ QString KExiv2::getExifTagString(const char* exifTagName, bool escapeCR) const
     try
     {
         Exiv2::ExifKey exifKey(exifTagName);
-        Exiv2::ExifData exifData(d->exifMetadata());
-        Exiv2::ExifData::iterator it = exifData.findKey(exifKey);
+        const Exiv2::ExifData& exifData = d->exifMetadata();
+        auto it = exifData.findKey(exifKey);
 
         if (it != exifData.end())
         {
@@ -863,8 +863,8 @@ QImage KExiv2::getExifThumbnail(bool fixOrientation) const
             {
                 Exiv2::ExifKey key1("Exif.Thumbnail.Orientation");
                 Exiv2::ExifKey key2("Exif.Image.Orientation");
-                Exiv2::ExifData exifData(d->exifMetadata());
-                Exiv2::ExifData::iterator it = exifData.findKey(key1);
+                const Exiv2::ExifData& exifData = d->exifMetadata();
+                auto it = exifData.findKey(key1);
 
                 if (it == exifData.end())
                     it = exifData.findKey(key2);
